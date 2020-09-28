@@ -48,17 +48,19 @@ public class monnifyApi extends AppCompatActivity {
     }
 
     private void getResult() {
-        String value = "Basic MK_TEST_UVTAAJMW4M:KRH38AY22SV83H7ACSRQYUJE7JDYYTQM";
-        String token = (String) Base64.encodeToString(value.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+        String value = "MK_TEST_SAF7HR5F3F:4SY6TNL8CK3VPRSBTHTRG2N8XXEGC6NL";
+        String token = (String) Base64.encodeToString(value.getBytes(), Base64.NO_WRAP);
+
+        //Api for getting token
        cli = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "abuhaneefah/tubhlahy");
+        RequestBody body = RequestBody.create(mediaType, "");
 
         Request request = new Request.Builder()
                 .url("https://sandbox.monnify.com/api/v1/auth/login/")
                 .method("POST", body)
-                .addHeader("Authorization", value)
+                .addHeader("Authorization", "Basic " + token)
                 .build();
        cli.newCall(request).enqueue(new Callback() {
             @Override

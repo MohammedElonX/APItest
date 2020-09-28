@@ -63,7 +63,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 .build();
 
         Request req = new Request.Builder()
-                .url("https://www.husmodata.com/api/validateiuc?smart_card_number=7098924912&&cablename=GOtv")
+                .url("https://www.husmodata.com/api/validateiuc?smart_card_number=7098924912&&cablename=GOtv Max")
                 .method("GET", null)
                 .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
                 .addHeader("Content-Type", "application/json")
