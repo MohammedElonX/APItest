@@ -58,17 +58,18 @@ public class ScrollingActivity extends AppCompatActivity {
         Request request = new Request.Builder()
                 .url("https://www.husmodata.com/api/user/")
                 .method("GET", null)
-                .addHeader("Authorization", value)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
                 .addHeader("Content-Type", "application/json")
                 .build();
 
         Request req = new Request.Builder()
-                .url("https://www.husmodata.com/api/data/")
+                .url("https://www.husmodata.com/api/validateiuc?smart_card_number=7098924912&&cablename=GOtv")
                 .method("GET", null)
-                .addHeader("Authorization", value)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
                 .build();
 
-        client.newCall(req).enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
@@ -113,6 +114,7 @@ public class ScrollingActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, monnifyApi.class);
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
