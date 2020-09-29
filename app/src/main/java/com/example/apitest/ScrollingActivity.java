@@ -55,6 +55,16 @@ public class ScrollingActivity extends AppCompatActivity {
         String token = (String) Base64.encodeToString(value.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
         client = new OkHttpClient().newBuilder()
                 .build();
+
+        //This works
+        Request st = new Request.Builder()
+                .url("https://www.gladtidingsdata.com/api/user/")
+                .method("GET", null)
+                .addHeader("Authorization", "Token 09439c438a708e2056024a536ad9609842e105aa")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //Doesn't work [internal server error]
         Request request = new Request.Builder()
                 .url("https://www.husmodata.com/api/user/")
                 .method("GET", null)
@@ -62,14 +72,28 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        Request req = new Request.Builder()
-                .url("https://www.husmodata.com/api/validateiuc?smart_card_number=7098924912&&cablename=GOtv Max")
-                .method("GET", null)
+        //This works
+        MediaType mediaTyp = MediaType.parse("application/json");
+        RequestBody bod = RequestBody.create(mediaTyp, " {\"network\": 1,\n \"amount\" :100, \n \"mobile_number\": \"07061181139\"}");
+        Request Airrequest = new Request.Builder()
+                .url("https://www.gladtidingsdata.com/api/topup/")
+                .method("POST", bod)
+                .addHeader("Authorization", "Token 09439c438a708e2056024a536ad9609842e105aa")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //Does'nt work [Ported_number is required]
+        MediaType mediaTye = MediaType.parse("application/json");
+        RequestBody bdy = RequestBody.create(mediaTye, " {\"network\": 1,\n \"amount\" :100, \n \"mobile_number\": \"07061181139\"}");
+        Request AirHrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/topup/")
+                .method("POST", bdy)
                 .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+
+        client.newCall(AirHrequest).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
