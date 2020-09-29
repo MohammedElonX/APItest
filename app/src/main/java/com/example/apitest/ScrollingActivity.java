@@ -92,8 +92,84 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
+        //(Controversial but) works
+        Request DataHrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/data/")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .build();
 
-        client.newCall(AirHrequest).enqueue(new Callback() {
+        //Does'nt work [Ported_number required]
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": 60}");
+        Request DataPurHrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/data/")
+                .method("POST", body)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //Works perfectly, [Ported_number was set to 'false']
+        Request AirTransrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/topup")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", " application/json")
+                .build();
+
+        //works too
+        Request BillTransrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/billpayment")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", " application/json")
+                .build();
+
+        //works
+        MediaType mediType = MediaType.parse("application/json");
+        RequestBody bodyB = RequestBody.create(mediType, "{ \"disco_name\": 2,\n\"amount\" : \"1500\",\n\"meter_number\": \"25584554544\", \n\"MeterType\": \"02\" }\n");
+        Request Billrequest = new Request.Builder()
+                .url("https://www.husmodata.com/api/billpayment/")
+                .method("POST", bodyB)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //works
+        MediaType mdiaType = MediaType.parse("application/json");
+        RequestBody Cbody = RequestBody.create(mdiaType, "{\"cablename\": \"01\" ,\n\"cableplan\" :\"02\", \n\"smart_card_number\": \"7028924912\"}");
+        Request requestC = new Request.Builder()
+                .url("https://www.husmodata.com/api/cablesub/")
+                .method("POST", Cbody)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //Does'nt work
+        Request requestVe = new Request.Builder()
+                .url("https://www.husmodata.com/api/validateiuc?smart_card_number=7028924912&&cablename=1")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //Works
+        Request requestValidM = new Request.Builder()
+                .url("https://www.husmodata.com/api/validatemeter?meternumber= 70594758648&&disconame=1&&mtype=2'")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        //works
+        Request requestCQ = new Request.Builder()
+                .url("https://www.husmodata.com/api/cablesub/")
+                .method("GET", null)
+                .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        client.newCall(requestValidM).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
