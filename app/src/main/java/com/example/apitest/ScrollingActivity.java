@@ -86,9 +86,9 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        //Does'nt work [Ported_number is required]
+        //Does'nt work [Ported_number is required] (Works now)
         MediaType mediaTye = MediaType.parse("application/json");
-        RequestBody bdy = RequestBody.create(mediaTye, " {\"network\": 1,\n \"amount\" :100, \n \"mobile_number\": \"07061181139\"}");
+        RequestBody bdy = RequestBody.create(mediaTye, " {\"network\": 1,\n \"amount\" :100, \n \"mobile_number\": \"07061181139\",\n \"Ported_number\":false}");
         Request AirHrequest = new Request.Builder()
                 .url("https://www.husmodata.com/api/topup/")
                 .method("POST", bdy)
@@ -103,9 +103,10 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
                 .build();
 
-        //Does'nt work [Ported_number required]
+        //Does'nt work [Ported_number required] (This works now)
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": 179}");
+        RequestBody body = RequestBody.create(mediaType,"{\"network\": 1,\n\"mobile_number\": \"09037346247\",\n\"plan\": 60,\n\"Ported_number\":false}");
+        //"{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": 179}");
         Request DataPurHrequest = new Request.Builder()
                 .url("https://www.husmodata.com/api/data/")
                 .method("POST", body)
@@ -184,7 +185,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 .build();
 
 
-        client.newCall(st).enqueue(new Callback() {
+        client.newCall(requestCQ).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
