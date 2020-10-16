@@ -13,6 +13,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +25,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private OkHttpClient client;
     private TextView textV;
     private Button btn;
+    private String fetchValue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,11 +105,21 @@ public class ScrollingActivity extends AppCompatActivity {
 
         //Does'nt work [Ported_number required]
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": 60}");
+        RequestBody body = RequestBody.create(mediaType, "{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": 179}");
         Request DataPurHrequest = new Request.Builder()
                 .url("https://www.husmodata.com/api/data/")
                 .method("POST", body)
                 .addHeader("Authorization", "Token b3aacd45d256fb778973feb6aa8839c1fcdb4f13")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+
+        MediaType mType = MediaType.parse("application/json");
+        RequestBody boy = RequestBody.create(mType, "{\"network\": 1,\n\"mobile_number\": \"07061181139\",\n\"plan\": \"179\"}");
+        Request dataGrequest = new Request.Builder()
+                .url("https://www.gladtidingsdata.com/api/data/")
+                .method("POST", boy)
+                .addHeader("Authorization", "Token 09439c438a708e2056024a536ad9609842e105aa")
                 .addHeader("Content-Type", "application/json")
                 .build();
 
@@ -169,7 +183,8 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        client.newCall(requestValidM).enqueue(new Callback() {
+
+        client.newCall(st).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
@@ -186,7 +201,32 @@ public class ScrollingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            textV.setText("Output: \n" + response.body().string() + "\n" + response.message());
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response.body().toString());
+                                JSONObject user = jsonResponse.getJSONObject("user");
+                                fetchValue = user.getString("username");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                            JSONObject jsonResponse = new JSONObject(s);
+//                            JSONArray earthquakeArray = jsonResponse.getJSONArray("features");
+//
+//                            for(int i = 0; i<earthquakeArray.length(); i++){
+//                                JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
+//                                JSONObject properties = currentEarthquake.getJSONObject("properties");
+//
+//                                String mag = properties.getString("mag");
+//                                String location = properties.getString("place");
+//
+//                                String datex = properties.getString("time");
+//                                //Convert String to Long
+//                                long dateLong = Long.parseLong(datex);
+//                                //Use date formatter
+//                                String date = getDateT(dateLong, "dd/MM/yyyy hh:mm:ss.SSS");
+//
+//                                Earthquake earthQuake = new Earthquake(mag, location, date);
+//                                earthquakes.add(earthQuake);
+                            textV.setText("Output: \n" + fetchValue +"\n" + response.body().string() + "\n" + response.message() +"\n"+ response.networkResponse().toString());
                         } catch (IOException e) {
                             textV.setText("Nothing found...!!!");
                         }
@@ -214,6 +254,12 @@ public class ScrollingActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, monnifyApi.class);
+            startActivity(i);
+            return true;
+        }
+
+        if (id == R.id.action) {
+            Intent i = new Intent(this, nasaTest.class);
             startActivity(i);
             return true;
         }
